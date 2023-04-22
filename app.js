@@ -1,12 +1,30 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/todolist');
+const Task = require("./DB/Task");
+
 const app = express();
+
+
 let items = [];
-let workList = [];
+// let workList = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+
+
+async function init() {
+
+  // const arr = [{ name: 'Do Home Work' }, { name: 'Clean Set-Up' }];
+  // Task.insertMany(arr);
+  const items = await Task.find({})
+  return items
+
+
+}
+init()
 app.get("/", (req, res) => {
   const today = new Date();
   let options = {
@@ -16,6 +34,8 @@ app.get("/", (req, res) => {
   };
 
   let day = today.toLocaleDateString("en-US", options);
+
+
   res.render("list", { listTitle: day, newlistItems: items });
 });
 
@@ -31,9 +51,9 @@ app.post("/", (req, res) => {
   }
 });
 
-app.get("/work", (req, res) => {
-  res.render("list", { listTitle: "Work List", newlistItems: workList });
-});
+// app.get("/work", (req, res) => {
+//   res.render("list", { listTitle: "Work List", newlistItems: workList });
+// });
 
 app.listen(3000, () => {
   console.log("Server is running from port 3000");
