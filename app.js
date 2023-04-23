@@ -7,24 +7,18 @@ const Task = require("./DB/Task");
 const app = express();
 
 
-let items = [];
-// let workList = [];
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 
 async function init() {
-
   // const arr = [{ name: 'Do Home Work' }, { name: 'Clean Set-Up' }];
   // Task.insertMany(arr);
   const items = await Task.find({})
   return items
-
-
 }
-init()
+
 app.get("/", (req, res) => {
   const today = new Date();
   let options = {
@@ -35,8 +29,11 @@ app.get("/", (req, res) => {
 
   let day = today.toLocaleDateString("en-US", options);
 
+  init().then((fountItems) => {
+    
+    res.render("list", { listTitle: day, newlistItems: fountItems });
+  })
 
-  res.render("list", { listTitle: day, newlistItems: items });
 });
 
 app.post("/", (req, res) => {
