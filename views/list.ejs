@@ -11,12 +11,14 @@
 
       <% newlistItems.forEach((items)=>{ %>
 
-        <div class="item">
-          <input type="checkbox" />
-          <p>
-            <%= items.name %>
-          </p>
-        </div>
+        <form action="/delete" method="post">
+          <div class="item">
+            <input type="checkbox" />
+            <p>
+              <%= items.name %>
+            </p>
+          </div>
+        </form>
 
         <% }) %>
 
