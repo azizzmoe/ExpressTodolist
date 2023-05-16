@@ -46,6 +46,25 @@ app.post("/", async (req, res) => {
   }
 });
 
+app.post("/delete", async (req, res) => {
+  const itemId = req.body.checkbox; // Assuming the ID is passed as the value of the "checkbox" field in the request body
+
+  try {
+    await Task.findByIdAndRemove(itemId); // Replace "item" with "Item" and use "itemId" as the argument
+    console.log("Successfully deleted checked item");
+    res.redirect("/");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+app.get("/:name", async (req, res) => {
+  const name = req.params.name;
+  res.send(`Hello, ${name}!`);
+});
+
+
+
 app.listen(3000, () => {
   console.log("Server is running from port 3000");
 });
