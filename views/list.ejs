@@ -5,10 +5,68 @@
       <h1>
         <%= listTitle %>
       </h1>
+      <div class="click">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Pick a List
+        </button>
+
+       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form id="myForm" action="/submit/:inputData" method="post">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="inputData" name="inputData" placeholder="Enter data">
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Go</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Your additional scripts -->
+      <script>
+        $(document).ready(function () {
+          $('#myForm').submit(function (e) {
+            e.preventDefault();
+
+            var inputData = $('#inputData').val();
+            console.log('Submitted data:', inputData);
+
+            // Construct the dynamic URL by replacing the placeholder with the input value
+            var url = '/submit/' + encodeURIComponent(inputData);
+
+            $.ajax({
+              url: url,
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ inputData: inputData }),
+              success: function (response) {
+                console.log('Response:', response);
+              },
+              error: function (error) {
+                console.log('Error:', error);
+              }
+            });
+
+            $('#exampleModal').modal('hide');
+          });
+        });
+      </script>
+
+
+      </div>
     </div>
 
     <div class="box">
-
       <% newlistItems.forEach((item)=>{ %>
 
         <form action="/delete" method="post">
@@ -23,8 +81,8 @@
         <% }) %>
 
           <form class="item" action="/" method="post">
-            <input type="text" name="newItem" placeholder="Add New" autocomplete="off" />
-            <button type="submit" name="list" value=<%=listTitle %>>+</button>
+            <input type="text" class="mainInput" name="newItem" placeholder="Add New" autocomplete="off" />
+            <button class="mainBtn" type="submit" name="list" value=<%=listTitle %>>+</button>
           </form>
     </div>
     <%- include('footer'); -%>

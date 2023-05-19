@@ -1,7 +1,7 @@
-html {
+body {
   background-color: #E4E9FD;
   background-image: -webkit-linear-gradient(65deg, tomato  20%, #6D6C6C 80%);
-  min-height: 1000px;
+  min-height: 100vh;
   font-family: 'helvetica neue';
 }
 
@@ -12,7 +12,7 @@ h1 {
 
 .box {
   max-width: 400px;
-  margin: 50px auto;
+  margin: 40px auto;
   background: white;
   border-radius: 5px;
   box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
@@ -56,7 +56,7 @@ form.item {
   margin-left: 20px;
 }
 
-button {
+button.mainBtn {
   min-height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -69,7 +69,10 @@ button {
   cursor: pointer;
 }
 
-input[type="text"] {
+.click{
+  padding: 0 0 1rem 0;
+}
+input[type="text"].mainInput {
   text-align: center;
   height: 60px;
   top: 10px;

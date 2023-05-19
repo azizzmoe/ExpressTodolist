@@ -58,12 +58,28 @@ app.post("/delete", async (req, res) => {
   }
 });
 
-app.get("/:name", async (req, res) => {
-  const name = req.params.name;
-  res.send(`Hello, ${name}!`);
+// app.get("/:name", async (req, res) => {
+//   const name = req.params.name;
+//   res.send(`Hello, ${name}!`);
+// });
+
+// app.post('/b', (req, res) => {
+//   const inputData = req.body.inputData;
+//   console.log('Submitted data:', inputData); // Display the submitted data on the server console
+
+//   // Additional code to process the submitted data as needed
+
+//   res.redirect('/inp'); // Redirect back to the index page
+// });
+
+app.post('/submit/:inputData', (req, res) => {
+  const inputData = req.params.inputData;
+  console.log('Submitted data:', inputData);
+
+  // Perform any necessary processing with the submitted data
+
+  res.send('Data received successfully');
 });
-
-
 
 app.listen(3000, () => {
   console.log("Server is running from port 3000");
