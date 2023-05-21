@@ -1,14 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/todolist");
 const Task = require("./DB/Task");
+
+mongoose.connect("mongodb://127.0.0.1:27017/todolist");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
+
+let inputData = "";
 
 app.get("/", async (req, res) => {
   const today = new Date();
@@ -22,7 +25,7 @@ app.get("/", async (req, res) => {
 
   try {
     let items = await Task.find({});
-    res.render("list", { listTitle: day, newlistItems: items });
+    res.render("list", { listTitle: day, newlistItems: items, inputData: "" });
   } catch (error) {
     console.error("Error while getting data:", error);
     res.status(500).send("Error while getting data");
@@ -47,10 +50,10 @@ app.post("/", async (req, res) => {
 });
 
 app.post("/delete", async (req, res) => {
-  const itemId = req.body.checkbox; // Assuming the ID is passed as the value of the "checkbox" field in the request body
+  const itemId = req.body.checkbox;
 
   try {
-    await Task.findByIdAndRemove(itemId); // Replace "item" with "Item" and use "itemId" as the argument
+    await Task.findByIdAndRemove(itemId);
     console.log("Successfully deleted checked item");
     res.redirect("/");
   } catch (error) {
@@ -58,29 +61,15 @@ app.post("/delete", async (req, res) => {
   }
 });
 
-// app.get("/:name", async (req, res) => {
-//   const name = req.params.name;
-//   res.send(`Hello, ${name}!`);
-// });
+app.post("/:inputData", (req, res) => {
+  inputData = req.params.inputData;
+  console.log("Input Data:", inputData);
 
-// app.post('/b', (req, res) => {
-//   const inputData = req.body.inputData;
-//   console.log('Submitted data:', inputData); // Display the submitted data on the server console
-
-//   // Additional code to process the submitted data as needed
-
-//   res.redirect('/inp'); // Redirect back to the index page
-// });
-
-app.post('/submit/:inputData', (req, res) => {
-  const inputData = req.params.inputData;
-  console.log('Submitted data:', inputData);
-
-  // Perform any necessary processing with the submitted data
-
-  res.send('Data received successfully');
+  res.send(`The chosen list : ${inputData}`);
+  // res.redirect("/inputData")
 });
 
+
 app.listen(3000, () => {
-  console.log("Server is running from port 3000");
+  console.log("Server is running on port 3000");
 });
